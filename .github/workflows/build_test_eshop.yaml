@@ -34,20 +34,20 @@ jobs:
 
     steps:
       - name: Git Checkout
-          uses: actions/checkout@2.4.0
-          with:
-            token: ${{ secrets.WORKFLOW_TOKEN }}
+        uses: actions/checkout@2.4.0
+        with:
+          token: ${{ secrets.WORKFLOW_TOKEN }}
 
       - name: Setup node
-          uses: actions/setup-node@2.4.1
-          with:
-            node_version: 10
+        uses: actions/setup-node@2.4.1
+        with:
+          node_version: 10
 
       - name: Cache node modules
-          uses: actions/cache@v2
-          with:
-            path: node_modules
-            key: node_modules-${{ hashFiles('**/package-lock.json') }}
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: node_modules-${{ hashFiles('**/package-lock.json') }}
 
       - name: Build
         run: |
