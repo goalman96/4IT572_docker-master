@@ -9,12 +9,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Git Checkout
-        uses: actions/checkout@2.4.0
+        uses: actions/checkout@v2.4.0
         with:
           token: ${{ secrets.WORKFLOW_TOKEN }}
 
       - name: Setup node
-        uses: actions/setup-node@2.4.1
+        uses: actions/setup-node@v2.4.1
         with:
           node_version: 10
 
@@ -34,12 +34,12 @@ jobs:
 
     steps:
       - name: Git Checkout
-        uses: actions/checkout@2.4.0
+        uses: actions/checkout@v2.4.0
         with:
           token: ${{ secrets.WORKFLOW_TOKEN }}
 
       - name: Setup node
-        uses: actions/setup-node@2.4.1
+        uses: actions/setup-node@v2.4.1
         with:
           node_version: 10
 
