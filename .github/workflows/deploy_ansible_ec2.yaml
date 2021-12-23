@@ -1,0 +1,28 @@
+name: deploy ansible
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  Deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git Checkout
+        uses: actions/checkout@v2.4.0
+        with:
+          token: ${{ secrets.WORKFLOW_TOKEN }}
+      - name: Run Ansible playbook
+        uses: dawidd6/action-ansible-playbook@v2.5.0
+        with:
+          # Required, playbook filepath
+          playbook: ansible/ec2_deploy.yml
+          # Optional, SSH private key
+          key: ${{secrets.SSH_PRIVATE_KEY}}
+          # Optional, encrypted vault password
+          vault_password: ${{secrets.VAULT_PASSWORD}}
+          # Optional, additional flags to pass to ansible-playbook
+          options: |
+            --user ec2-user

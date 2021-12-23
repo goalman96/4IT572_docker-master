@@ -42,7 +42,7 @@ npm run wdio
 - e2e
   - Webdriverio - Add and remove product from cart
 
-### Copyright and license
+### Copyright and licenses
 
 The MIT License (MIT). Please see License File for more information.
 
