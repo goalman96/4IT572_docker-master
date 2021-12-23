@@ -18,6 +18,8 @@ jobs:
         with:
           # Required, playbook filepath
           playbook: ./.github/workflows/ansible/ec2_deploy.yml
+          # Optional, directory where playbooks live
+          directory: ./.github/workflows/ansible
           # Optional, SSH private key
           key: ${{secrets.SSH_PRIVATE_KEY}}
           # Optional, encrypted vault password
