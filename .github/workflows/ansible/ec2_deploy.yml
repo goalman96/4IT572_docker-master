@@ -4,16 +4,24 @@
 
   tasks:
     - name: Tag old EC2 instances
+      ec2_instance_facts:
+        region: us-east-1
+        aws_access_key: "{{access_key}}"
+        aws_secret_key: "{{secret_key}}"
+        security_token: "{{session_token}}"
+        filters:
+          group-name: eshop
+      register: ec2
+    - name: Tag old EC2 instances
       amazon.aws.ec2_tag:
         region: us-east-1
         resource: '{{ item.id }}'
-        group: eshop
-        wait: true
         aws_access_key: "{{access_key}}"
         aws_secret_key: "{{secret_key}}"
         security_token: "{{session_token}}"
         tags:
           old: true
+      loop: "{{ ec2.instances }}"
 
 - name: Deploy to EC2
   hosts: localhost
@@ -26,7 +34,7 @@
         image: ami-04902260ca3d33422
         region: us-east-1
         key_name: devops
-        vpc_subnet_id: subnet-03f75be7946b98f89
+        vpc_subnet_id: subnet-0e0595dfca9b76486
         assign_public_ip: yes
         count: 1
         group: eshop
@@ -97,6 +105,15 @@
   connection: local
 
   tasks:
+    - name: Tag old EC2 instances
+        ec2_instance_facts:
+          region: us-east-1
+          aws_access_key: "{{access_key}}"
+          aws_secret_key: "{{secret_key}}"
+          security_token: "{{session_token}}"
+          filters:
+            "tag:old": true
+        register: ec2
     - name: Terminate old EC2 instances
       amazon.aws.ec2:
         region: us-east-1
@@ -105,6 +122,6 @@
         aws_access_key: "{{access_key}}"
         aws_secret_key: "{{secret_key}}"
         security_token: "{{session_token}}"
-        wait: yes
         instance_tags:
           old: true
+      loop: "{{ ec2.instances }}"
