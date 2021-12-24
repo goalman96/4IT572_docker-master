@@ -3,25 +3,16 @@
   connection: local
 
   tasks:
-    - name: Tag old EC2 instances
+    - name: Get old EC2 instances
       ec2_instance_facts:
         region: us-east-1
         aws_access_key: "{{access_key}}"
         aws_secret_key: "{{secret_key}}"
         security_token: "{{session_token}}"
         filters:
-          group-name: eshop
-      register: ec2
-    - name: Tag old EC2 instances
-      amazon.aws.ec2_tag:
-        region: us-east-1
-        resource: '{{ item.id }}'
-        aws_access_key: "{{access_key}}"
-        aws_secret_key: "{{secret_key}}"
-        security_token: "{{session_token}}"
-        tags:
-          old: true
-      loop: "{{ ec2.instances }}"
+          instance:
+            group-name: eshop
+      register: oldEc2
 
 - name: Deploy to EC2
   hosts: localhost
@@ -105,23 +96,12 @@
   connection: local
 
   tasks:
-    - name: Tag old EC2 instances
-      ec2_instance_facts:
-        region: us-east-1
-        aws_access_key: "{{access_key}}"
-        aws_secret_key: "{{secret_key}}"
-        security_token: "{{session_token}}"
-        filters:
-          "tag:old": true
-      register: ec2
     - name: Terminate old EC2 instances
       amazon.aws.ec2:
         region: us-east-1
-        resource: '{{ item.id }}'
+        instance_ids: "{{item.instance_id}}"
         state: absent
         aws_access_key: "{{access_key}}"
         aws_secret_key: "{{secret_key}}"
         security_token: "{{session_token}}"
-        instance_tags:
-          old: true
-      loop: "{{ ec2.instances }}"
+      with_items: "{{oldEc2.instances}}"
