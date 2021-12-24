@@ -9,8 +9,8 @@
         aws_access_key: "{{access_key}}"
         aws_secret_key: "{{secret_key}}"
         security_token: "{{session_token}}"
-        filters:
-          instance-group-name: eshop
+#        filters:
+#          group-name: eshop
       register: oldEc2
 
 - name: Deploy to EC2
@@ -24,7 +24,7 @@
         image: ami-04902260ca3d33422
         region: us-east-1
         key_name: devops
-        vpc_subnet_id: subnet-0c986cd89c9977717
+        vpc_subnet_id: subnet-061f8db78ad96b036
         assign_public_ip: yes
         count: 1
         group: eshop
