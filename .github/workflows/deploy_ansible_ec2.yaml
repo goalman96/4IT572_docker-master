@@ -6,20 +6,7 @@ on:
       - main
 
 jobs:
-  # Install ansible and boto
-  Install:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Git Checkout
-        uses: actions/checkout@v2.4.0
-        with:
-          token: ${{ secrets.WORKFLOW_TOKEN }}
-
-      - name: Install with npm
-        run: |
-          pip install ansible==4 boto boto3
   Deploy:
-    needs: Install
     runs-on: ubuntu-latest
     steps:
       - name: Git Checkout
@@ -35,6 +22,10 @@ jobs:
           directory: ./.github/workflows/ansible
           # Optional, SSH private key
           key: ${{secrets.SSH_PRIVATE_KEY}}
+          # Optional, literal inventory file contents
+          inventory: |
+            [all]
+            localhost
           # Optional, encrypted vault password
           vault_password: ${{secrets.VAULT_PASSWORD}}
           # Optional, additional flags to pass to ansible-playbook
