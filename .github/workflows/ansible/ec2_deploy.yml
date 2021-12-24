@@ -1,8 +1,24 @@
-- name: Deploy to EC2
+- name: Tag old EC2 instances
   hosts: localhost
   connection: local
 
   tasks:
+    - name: Tag old EC2 instances
+        amazon.aws.ec2_tag:
+          region: us-east-1
+          group: eshop
+          wait: true
+          aws_access_key: "{{access_key}}"
+          aws_secret_key: "{{secret_key}}"
+          security_token: "{{session_token}}"
+          tags:
+            old: true
+        loop: "{{ ec2.instances }}"
+
+- name: Deploy to EC2
+  hosts: localhost
+  connection: local
+
     - name: Launch EC2 instance
       amazon.aws.ec2:
         instance_type: t2.small
@@ -74,3 +90,20 @@
     - wait_for:
         port:
           80
+
+- name: Terminate old EC2 instances
+  hosts: localhost
+  connection: local
+
+  tasks:
+    - name: Terminate old EC2 instances
+      amazon.aws.ec2:
+        region: us-east-1
+        state: absent
+        aws_access_key: "{{access_key}}"
+        aws_secret_key: "{{secret_key}}"
+        security_token: "{{session_token}}"
+        wait: yes
+        instance_tags:
+          old: true
+      loop: "{{ ec2.instances }}"
