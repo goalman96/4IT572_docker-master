@@ -6,7 +6,20 @@ on:
       - main
 
 jobs:
+  # Install ansible and boto
+  Install:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git Checkout
+        uses: actions/checkout@v2.4.0
+        with:
+          token: ${{ secrets.WORKFLOW_TOKEN }}
+
+      - name: Install with npm
+        run: |
+          pip install ansible==4 boto boto3
   Deploy:
+    needs: Install
     runs-on: ubuntu-latest
     steps:
       - name: Git Checkout
