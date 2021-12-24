@@ -11,7 +11,7 @@
         security_token: "{{session_token}}"
         filters:
           instance:
-            group-name: eshop
+            - group-name: eshop
       register: oldEc2
 
 - name: Deploy to EC2
