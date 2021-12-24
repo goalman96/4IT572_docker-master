@@ -13,7 +13,6 @@
           security_token: "{{session_token}}"
           tags:
             old: true
-        loop: "{{ ec2.instances }}"
 
 - name: Deploy to EC2
   hosts: localhost
@@ -106,4 +105,3 @@
         wait: yes
         instance_tags:
           old: true
-      loop: "{{ ec2.instances }}"
