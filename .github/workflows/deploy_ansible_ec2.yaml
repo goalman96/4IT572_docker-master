@@ -28,7 +28,7 @@ jobs:
           # Optional, literal inventory file contents
           inventory: |
             [all]
-            example.com
+            localhost
           # Optional, encrypted vault password
           vault_password: ${{secrets.VAULT_PASSWORD}}
           # Optional, additional flags to pass to ansible-playbook

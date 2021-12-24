@@ -6,6 +6,7 @@
     - name: Tag old EC2 instances
       amazon.aws.ec2_tag:
         region: us-east-1
+        resource: '{{ item.id }}'
         group: eshop
         wait: true
         aws_access_key: "{{access_key}}"
@@ -13,6 +14,7 @@
         security_token: "{{session_token}}"
         tags:
           old: true
+      loop: "{{ ec2.instances }}"
 
 - name: Deploy to EC2
   hosts: localhost
@@ -99,6 +101,7 @@
     - name: Terminate old EC2 instances
       amazon.aws.ec2:
         region: us-east-1
+        resource: '{{ item.id }}'
         state: absent
         aws_access_key: "{{access_key}}"
         aws_secret_key: "{{secret_key}}"
@@ -106,3 +109,4 @@
         wait: yes
         instance_tags:
           old: true
+      loop: "{{ ec2.instances }}"
