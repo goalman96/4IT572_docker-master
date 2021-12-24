@@ -89,7 +89,7 @@ jobs:
   Deploy:
     needs: [Build, Test]
     runs-on: ubuntu-latest
-    if: ${{ github.event.pull_request.merged  }}
+    if: ${{ github.event_name == 'push' }}
 
     steps:
       - name: Git Checkout
