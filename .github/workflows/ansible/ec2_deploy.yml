@@ -4,15 +4,15 @@
 
   tasks:
     - name: Tag old EC2 instances
-        amazon.aws.ec2_tag:
-          region: us-east-1
-          group: eshop
-          wait: true
-          aws_access_key: "{{access_key}}"
-          aws_secret_key: "{{secret_key}}"
-          security_token: "{{session_token}}"
-          tags:
-            old: true
+      amazon.aws.ec2_tag:
+        region: us-east-1
+        group: eshop
+        wait: true
+        aws_access_key: "{{access_key}}"
+        aws_secret_key: "{{secret_key}}"
+        security_token: "{{session_token}}"
+        tags:
+          old: true
 
 - name: Deploy to EC2
   hosts: localhost
